@@ -26,7 +26,7 @@ export const CourseTestimonials: React.FC<CourseTestimonialsProps> = ({
     const closeModal = () => {
         setSelectedVideo(null);
         setIsVideoModalOpen(false);
-        git
+
     };
 
     const openVideoModal = (videoUrl: string) => {
