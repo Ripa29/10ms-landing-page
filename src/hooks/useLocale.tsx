@@ -1,11 +1,12 @@
 'use client';
+
 import { useState, createContext, useContext, ReactNode } from 'react';
 import { locales, Locale, defaultLocale } from '@/i18n/config';
 
 interface LocaleContextType {
     locale: Locale;
     setLocale: (locale: Locale) => void;
-    t: (key: string) => string;
+    t: (key: string) => string | string[];
 }
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
@@ -13,22 +14,26 @@ const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setLocale] = useState<Locale>(defaultLocale);
 
-    const t = (key: string): string => {
+    const t = (key: string): string | string[] => {
         const keys = key.split('.');
-        let value: any = locales[locale];
+        let value: unknown = locales[locale];
 
         for (const k of keys) {
-            value = value?.[k];
+            if (typeof value === 'object' && value !== null && k in value) {
+                value = (value as Record<string, unknown>)[k];
+            } else {
+                return key;
+            }
         }
 
-        return value || key;
+        return typeof value === 'string' || Array.isArray(value) ? value : key;
     };
 
     return (
         <LocaleContext.Provider value={{ locale, setLocale, t }}>
-    {children}
-    </LocaleContext.Provider>
-);
+            {children}
+        </LocaleContext.Provider>
+    );
 }
 
 export const useLocale = () => {

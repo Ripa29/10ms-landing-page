@@ -1,7 +1,18 @@
-import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
+    experimental: {
+        appDir: true,
+    },
+    images: {
+        domains: ['cdn.10minuteschool.com', 's3.ap-southeast-1.amazonaws.com'],
+    },
+    i18n: {
+        locales: ['en', 'bn'],
+        defaultLocale: 'en',
+    },
+}
 
-export default nextConfig;
+module.exports = nextConfig

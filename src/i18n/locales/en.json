@@ -1,0 +1,166 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "success": "Success!",
+    "retry": "Retry",
+    "close": "Close",
+    "search": "Search...",
+    "language": "Language",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Signup"
+  },
+  "course": {
+    "enroll": "Enroll Now",
+    "price": "Price",
+    "instructor": "Instructor",
+    "duration": "Duration",
+    "videos": "Videos",
+    "students": "Students",
+    "lifetime": "Lifetime Access",
+    "certificate": "Certificate",
+    "mockTests": "Mock Tests",
+    "lectureSheets": "Lecture Sheets",
+    "liveClasses": "Live Classes",
+    "supportGroup": "Support Group",
+    "previewPrompt": "Watch preview videos to learn more about the course content",
+    "whatYouWillGet": "What You Will Get"
+  },
+  "sections": {
+    "courseInstructor": "Course Instructor",
+    "courseFeatures": "How the course is structured",
+    "whatYouWillLearn": "What you will learn",
+    "courseDetails": "Course Details",
+    "testimonials": "Student Testimonials",
+    "exclusiveFeatures": "Exclusive Course Features",
+    "coursetrailer": "Course Preview"
+  },
+  "contact": {
+    "whatsapp": "WhatsApp:",
+    "mail": "Email:",
+    "outside": "Outside Bangladesh:",
+    "outsidenumber": "+880 9610916910",
+    "call": "Call Us:",
+    "support": "Support",
+    "whatsappNumber": "+8801896016252",
+    "callNumber": "16910",
+    "whatsappMessage": "Hello! I need help with the IELTS course."
+  },
+  "payment": {
+    "paymentoption": "Choose Payment Method",
+    "pay": "Pay Now"
+  },
+  "confirmation": {
+    "heading": "Congratulations! 🎉",
+    "description": "You have successfully enrolled in the course",
+    "coursedetails": "Course Details:",
+    "course": "Course:",
+    "pricing": "Price:",
+    "access": "Access:",
+    "duration": "Lifetime Access",
+    "start": "Start Your Course Now!"
+  },
+  "delivery": {
+    "title": "Delivery Option",
+    "subtitle": "Please provide a delivery address",
+    "confirm": "Confirm Order"
+  },
+  "courseCTA": {
+    "heading": "Start your IELTS journey today",
+    "description": "Join thousands of successful students and achieve your dream score",
+    "benefits": [
+      "Lifetime Access",
+      "Certificate",
+      "Live Support",
+      "Mobile App Access"
+    ],
+    "priceLabel": "One-time Payment",
+    "discountLabel": "Discount Price",
+    "urgency": "Special price for a limited time",
+    "enrollButton": "Enroll Now"
+  },
+  "footer": {
+    "heading": "The Largest Online Education Platform in Bangladesh.",
+    "other": "Other",
+    "otherLabel": [
+      "Blog",
+      "Book Store",
+      "Free Notes & Guides",
+      "Job Preparation Courses",
+      "Verify Certificate",
+      "Free Download"
+    ],
+    "company": "Company",
+    "companyLabel": [
+      "Career / Recruitment",
+      "Join as a Teacher",
+      "Join as an Affiliate",
+      "Privacy policy",
+      "Refund policy",
+      "Terms & Conditions"
+    ],
+    "keep": "Keep up with us at",
+    "copyright": "2015 - 2025 Copyright © 10 Minute School. All rights reserved.",
+    "download": "Download Our Mobile App"
+  },
+  "nav": {
+    "class6to12": {
+      "title": "Class 6–12",
+      "class6to12Label": [
+        "HSC",
+        "Class Ten",
+        "Class Nine",
+        "Class Eight",
+        "Class Seven",
+        "Class Six"
+      ]
+    },
+    "skill": {
+      "title": "Skill",
+      "skillLabel": [
+        "All courses",
+        "Language Learning",
+        "Freelancing",
+        "Bundle",
+        "Skills & IT",
+        "Design & Creative",
+        "Career Readiness",
+        "Kids (Age 7-14)",
+        "Professional"
+      ]
+    },
+    "admissionTest": "Admission Test",
+    "onlineBatch": {
+      "title": "Online Batch",
+      "onlineBatchLabel": [
+        "Hsc",
+        "Online Batch (Class 6-10)"
+      ]
+    },
+    "englishCenter": {
+      "title": "English Center",
+      "englishCenterLabel": [
+        "All Programmes",
+        "IELTS Programme",
+        "Spoken English (Junior)",
+        "English Foundation Programme",
+        "Kids' English"
+      ]
+    },
+    "more": {
+      "title": "More",
+      "moreLabel": [
+        "Job Preparation Courses",
+        "Blog",
+        "Book Store",
+        "Free Notes & Guides",
+        "Academic Digital Content",
+        "Verify Certificate",
+        "Career / Recruitment",
+        "Join as a Teacher",
+        "Join as an Affiliate"
+      ]
+    }
+  }
+}

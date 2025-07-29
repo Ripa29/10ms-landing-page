@@ -1,11 +1,11 @@
 'use client';
 import { useState, createContext, useContext, ReactNode } from 'react';
-import { User, AuthState } from '@/types/auth';
+import { User, AuthState, Credentials, SignupData } from '@/types/auth';
 
 interface AuthContextType extends AuthState {
-    login: (email: string, password: string) => Promise<void>;
+    login: (credentials: Credentials) => Promise<void>;
     logout: () => void;
-    register: (userData: Partial<User>) => Promise<void>;
+    signup: (data: SignupData) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -14,22 +14,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [authState, setAuthState] = useState<AuthState>({
         user: null,
         isAuthenticated: false,
-        isLoading: false,
+        loading: false,
     });
 
-    const login = async (email: string, password: string) => {
-        setAuthState(prev => ({ ...prev, isLoading: true }));
+    const login = async ({ email, password }: Credentials) => {
+        setAuthState(prev => ({ ...prev, loading: true }));
         try {
-            // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const user: User = { id: '1', name: 'John Doe', email };
+            const user: User = {
+                id: '1',
+                name: 'John Doe',
+                email,
+                phone: '0123456789',
+            };
             setAuthState({
                 user,
                 isAuthenticated: true,
-                isLoading: false,
+                loading: false,
             });
         } catch (error) {
-            setAuthState(prev => ({ ...prev, isLoading: false }));
+            setAuthState(prev => ({ ...prev, loading: false }));
             throw error;
         }
     };
@@ -38,31 +42,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuthState({
             user: null,
             isAuthenticated: false,
-            isLoading: false,
+            loading: false,
         });
     };
 
-    const register = async (userData: Partial<User>) => {
-        setAuthState(prev => ({ ...prev, isLoading: true }));
+    const signup = async (data: SignupData) => {
+        setAuthState(prev => ({ ...prev, loading: true }));
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const user: User = { id: '1', ...userData } as User;
+            const user: User = {
+                id: '2',
+                ...data,
+            };
             setAuthState({
                 user,
                 isAuthenticated: true,
-                isLoading: false,
+                loading: false,
             });
         } catch (error) {
-            setAuthState(prev => ({ ...prev, isLoading: false }));
+            setAuthState(prev => ({ ...prev, loading: false }));
             throw error;
         }
     };
 
     return (
-        <AuthContext.Provider value={{ ...authState, login, logout, register }}>
-    {children}
-    </AuthContext.Provider>
-);
+        <AuthContext.Provider value={{ ...authState, login, logout, signup }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export const useAuth = () => {

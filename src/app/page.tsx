@@ -1,103 +1,178 @@
-import Image from "next/image";
+'use client';
+import React, { useState, useEffect } from 'react';
+import { CourseHero } from '@/components/course/CourseHero';
+import { CourseTrailer } from '@/components/course/CourseTrailer';
+import { CourseInstructors } from '@/components/course/CourseInstructors';
+import { CourseFeatures } from '@/components/course/CourseFeatures';
+import { CoursePointers } from '@/components/course/CoursePointers';
+import { CourseDetails } from '@/components/course/CourseDetails';
+import { CourseCheckList } from '@/components/course/CourseCheckList';
+import { CourseTestimonials } from '@/components/course/CourseTestimonials';
+import { CourseCTA } from '@/components/course/CourseCTA';
+import { PaymentModal } from '@/components/payment/PaymentModal';
+import { Loading } from '@/components/ui/Loading';
+import { fetchCourseData } from '@/lib/api';
+import { useLocale } from '@/hooks/useLocale';
+import type { CourseData } from '@/types/course';
+import {FAQ} from "@/components/course/FAQ";
+import CourseExclusiveFeatures from "@/components/course/CourseExclusiveFeatures";
+import {CourseLayoutSection} from "@/components/course/CourseLayoutSection";
+import {SEOHead} from "@/components/common/SEOHead";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export default function HomePage() {
+  const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const { locale } = useLocale();
+
+  useEffect(() => {
+    const loadCourseData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetchCourseData(locale);
+        setCourseData(response.data);
+      } catch (err) {
+        setError('Failed to load course data');
+        console.error('Error loading course data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourseData();
+  }, [locale]);
+
+  const handleEnroll = () => {
+    setIsPaymentModalOpen(true);
+  };
+
+  if (loading) {
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+          <Loading />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+    );
+  }
+
+  if (error || !courseData) {
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h2>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+    );
+  }
+
+  // Process sections data
+  const instructorsSection = courseData.sections.find(s => s.type === 'instructors');
+  const courseLayoutSection = courseData.sections.find(s => s.type === 'courseLayout');
+  const pointersSection = courseData.sections.find(s => s.type === 'pointers');
+  const aboutSection = courseData.sections.find(s => s.type === 'about');
+  const featuresSection = courseData.sections.find(s => s.type === 'features');
+  const testimonialsSection = courseData.sections.find(s => s.type === 'testimonials');
+  const exclusiveFeaturesSection = courseData.sections.find(s => s.type === 'feature_explanations');
+  const faqSection = courseData.sections.find(s => s.type === 'faq');
+  return (
+
+        <div className="min-h-screen bg-white">
+          <SEOHead course={courseData} />
+
+          {/* Title + Description */}
+          <CourseHero courseData={courseData} onEnroll={handleEnroll} />
+
+          <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {/* Left Column */}
+            <div className="lg:col-span-2 space-y-6">
+
+              {/* How the course is laid out */}
+              {courseLayoutSection && (
+                  <CourseLayoutSection
+                      features={courseLayoutSection.values}
+                      sectionName={courseLayoutSection.name}
+                  />
+              )}
+
+              {/* Instructors */}
+              {instructorsSection && (
+                  <CourseInstructors instructors={instructorsSection.values} />
+              )}
+
+              {/* Features */}
+              {featuresSection && (
+                  <CourseFeatures
+                      features={featuresSection.values}
+                      sectionName={featuresSection.name}
+                  />
+              )}
+
+              {/* What you will learn by doing the course */}
+              {pointersSection && (
+                  <CoursePointers
+                      pointers={pointersSection.values}
+                      sectionName={pointersSection.name}
+                  />
+              )}
+
+              {/* Course Exclusive Feature */}
+              {exclusiveFeaturesSection && exclusiveFeaturesSection.values.length > 0 && (
+                  <CourseExclusiveFeatures
+                      features={exclusiveFeaturesSection.values}
+                      sectionName={exclusiveFeaturesSection.name}
+                  />
+              )}
+
+              {/* Course details */}
+              {aboutSection && (
+                  <CourseDetails
+                      sections={aboutSection.values}
+                      title={aboutSection.name}
+                  />
+              )}
+            </div>
+
+            {/* Right Column: Trailer, CTA, Checklist */}
+            <div className="space-y-4">
+              <CourseTrailer media={courseData.media} />
+              <CourseCTA ctaText={courseData.cta_text.name} onEnroll={handleEnroll} />
+              <CourseCheckList checklist={courseData.checklist} />
+            </div>
+          </div>
+
+          {/* Testimonials */}
+          {testimonialsSection && (
+              <CourseTestimonials
+                  testimonials={testimonialsSection.values}
+                  title={testimonialsSection.name}
+              />
+          )}
+
+          {/* FAQ */}
+          {faqSection && (
+              <FAQ
+                  faqs={faqSection.values}
+                  sectionName={faqSection.name}
+              />
+          )}
+
+          {/* Payment Modal */}
+          <PaymentModal
+              isOpen={isPaymentModalOpen}
+              onClose={() => setIsPaymentModalOpen(false)}
+              courseId={courseData.id}
+              courseTitle={courseData.title}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+
+        </div>
   );
 }
